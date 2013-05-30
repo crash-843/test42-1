@@ -1,10 +1,16 @@
 [
 {
-    "pk": 1,
-    "model": "homepage.info",
+    "pk": 1, 
+    "model": "homepage.info", 
     "fields": {
-        "first_name": "Constantine",
-        "last_name": "Fedenko"
+        "bio": "My bio", 
+        "first_name": "Constantine", 
+        "last_name": "Fedenko", 
+        "contacts": "My Contacts", 
+        "birthday": "1988-03-23", 
+        "skype": "cfedenko", 
+        "jabber": "fedenko@jabber.org", 
+        "email": "cfedenko@gmail.com"
     }
 }
 ]
