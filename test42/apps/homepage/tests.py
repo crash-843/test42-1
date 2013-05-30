@@ -17,11 +17,10 @@ class ViewTestCase(TestCase):
     def test_home_context(self):
         request = RequestFactory().get('/')
         response = home(request)
-        self.assertNotContains(response, "Bob Jones", status_code=200)
-        info = Info.objects.create(first_name="Bob",
-                                        last_name="Jones")
-        info.save()
+        self.assertContains(response, "Constantine Fedenko", status_code=200)
+        info = Info.objects.get(pk=1)
+        info.delete()
         request = RequestFactory().get('/')
         response = home(request)
-        self.assertContains(response, "Bob Jones", status_code=200)
+        self.assertNotContains(response, "Constantine Fedenko", status_code=200)
 
