@@ -2,7 +2,39 @@
 {% block title %}42 Coffee Cups Test Assignment{% endblock %}
 {% block content %}
 <h3>42 Coffee Cups Test Assignment</h3>
-{% if info %}
-    <p>{{info}}</p>
-{% endif %}
+<div class="row">
+    <div class="column">
+        <p>{{info.first_name}}</p>
+        <p>{{info.last_name}}</p>
+        {% if info.birthday %}
+            <p>{{info.birthday}}</p>
+        {% endif %}
+    </div>
+    <div class="column">
+        <p>Contacts</p>
+        {% if info.email %}
+            <p>Email: {{info.email}}</p>
+        {% endif %}
+        {% if info.jabber %}
+            <p>Jabber: {{info.jabber}}</p>
+        {% endif %}
+        {% if info.skype %}
+            <p>Skype: {{info.skype}}</p>
+        {% endif %}
+    </div>
+</div>
+    <div class="row">
+    <div class="column">
+        {% if info.bio %}
+            <p>Bio:</p>
+            <p>{{info.bio|linebreaksbr}}</p>
+        {% endif %}
+    </div>
+    <div class="column">
+        {% if info.contacts %}
+            <p>Other contacts:</p>
+            <p>{{info.contacts|linebreaksbr}}</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock content %}
