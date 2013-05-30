@@ -17,10 +17,9 @@ class ViewTestCase(TestCase):
     def test_home_context(self):
         request = RequestFactory().get('/')
         response = home(request)
-        self.assertContains(response, "Constantine Fedenko", status_code=200)
-        info = Info.objects.get(pk=1)
-        info.delete()
+        self.assertContains(response, "Constantine", status_code=200)
+        Info.objects.all().delete()
         request = RequestFactory().get('/')
         response = home(request)
-        self.assertNotContains(response, "Constantine Fedenko", status_code=200)
+        self.assertNotContains(response, "Constantine", status_code=200)
 
