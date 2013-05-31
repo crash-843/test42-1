@@ -1,6 +1,8 @@
 from django.test import RequestFactory, TestCase
-from .models import Info
+from datetime import datetime
+from .models import Info, LogEntry
 from .views import home
+
 
 class InfoModelTestCase(TestCase):
     def setUp(self):
@@ -13,7 +15,7 @@ class InfoModelTestCase(TestCase):
             jabber = "bob@jabber.org",
             skype = "bobjones",
             contacts = "Contacts"
-        )
+        ).save()
 
     def test_info_model(self):
         self.assertEqual(self.info.first_name, "Bob")
@@ -25,6 +27,22 @@ class InfoModelTestCase(TestCase):
         self.assertEqual(unicode(self.info.jabber), "bob@jabber.org")
         self.assertEqual(unicode(self.info.skype), "bobjones")
         self.assertEqual(unicode(self.info.contacts), "Contacts")
+
+
+class LogEntryModelTestCase(TestCase):
+    def setUp(self):
+        self.logentry = LogEntry.objects.create(
+            created = datetime.now(),
+            method = "GET",
+            url = "/about/",
+            status = 200
+        ).save()
+
+    def test_logentry_model(self):
+        self.assertEqual(self.logentry.method, "GET")
+        self.assertEqual(self.logentry.url, "/about/")
+        self.assertEqual(self.logentry.status, 200)
+
 
 
 class ViewTestCase(TestCase):
