@@ -15,7 +15,8 @@ class InfoModelTestCase(TestCase):
             jabber = "bob@jabber.org",
             skype = "bobjones",
             contacts = "Contacts"
-        ).save()
+        )
+        self.info.save()
 
     def test_info_model(self):
         self.assertEqual(self.info.first_name, "Bob")
@@ -36,7 +37,8 @@ class LogEntryModelTestCase(TestCase):
             method = "GET",
             url = "/about/",
             status = 200
-        ).save()
+        )
+        self.logentry.save()
 
     def test_logentry_model(self):
         self.assertEqual(self.logentry.method, "GET")
