@@ -72,7 +72,7 @@ class ViewTestCase(TestCase):
             self.client.get('/')
 
         response = self.client.get('/log/')
-        entry_list = response.context['entry_list']
+        entry_list = response.context[-1]['entry_list']
         self.assertEqual(len(entry_list), 10)
 
 
