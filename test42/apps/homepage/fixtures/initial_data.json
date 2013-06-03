@@ -12,5 +12,17 @@
         "jabber": "fedenko@jabber.org", 
         "email": "cfedenko@gmail.com"
     }
+},
+{
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "admin", 
+        "is_active": true, 
+        "is_superuser": true, 
+        "is_staff": true, 
+        "password": "pbkdf2_sha256$10000$IlujYO2pKv2L$ZuEt/hTARfakFEf+Nc6AHkAcX9Dp+XyI1PpNo2GnTng=", 
+        "email": "admin@fedenko.org"
+    }
 }
 ]
