@@ -1,7 +1,7 @@
 from django.test import RequestFactory, TestCase
 from django.test.client import Client
 from .models import Info, LogEntry
-from .views import home
+from .views import Home
 
 
 class InfoModelTestCase(TestCase):
@@ -47,8 +47,12 @@ class LogEntryModelTestCase(TestCase):
 
 
 class ViewTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+
     def test_home_context(self):
         request = RequestFactory().get('/')
+        home = Home.as_view()
         response = home(request)
         self.assertContains(response, "Constantine", status_code=200)
         self.assertContains(response, "Fedenko", status_code=200)
@@ -62,6 +66,14 @@ class ViewTestCase(TestCase):
         request = RequestFactory().get('/')
         response = home(request)
         self.assertNotContains(response, "Constantine", status_code=200)
+
+    def test_log_context(self):
+        for i in xrange(11):
+            self.client.get('/')
+
+        response = self.client.get('/log/')
+        entry_list = response.context['entry_list']
+        self.assertEqual(len(entry_list), 10)
 
 
 class MiddlewareModelTestCase(TestCase):
