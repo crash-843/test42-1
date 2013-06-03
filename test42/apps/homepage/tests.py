@@ -1,5 +1,5 @@
 from django.test import RequestFactory, TestCase
-from datetime import datetime
+from django.test.client import Client
 from .models import Info, LogEntry
 from .views import home
 
@@ -33,7 +33,6 @@ class InfoModelTestCase(TestCase):
 class LogEntryModelTestCase(TestCase):
     def setUp(self):
         self.logentry = LogEntry.objects.create(
-            created = datetime.now(),
             method = "GET",
             url = "/about/",
             status = 200
@@ -63,4 +62,16 @@ class ViewTestCase(TestCase):
         request = RequestFactory().get('/')
         response = home(request)
         self.assertNotContains(response, "Constantine", status_code=200)
+
+
+class MiddlewareModelTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_info_model(self):
+        response = self.client.get('/')
+        entry = LogEntry.objects.latest()
+        self.assertEqual(entry.method, "GET")
+        self.assertEqual(entry.url, "/")
+        self.assertEqual(entry.status, 200)
 
