@@ -21,3 +21,15 @@ class LogEntry(models.Model):
     method = models.CharField(max_length=30)
     url = models.CharField(max_length=255)
     status = models.IntegerField()
+
+
+    class Meta:
+        ordering = ["-created"]
+        get_latest_by = "created"
+
+
+    def __unicode__(self):
+        return "{0} {1} {2} {3}".format(self.created,
+                                        self.method,
+                                        self.url,
+                                        self.status)

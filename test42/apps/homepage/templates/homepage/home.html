@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}42 Coffee Cups Test Assignment{% endblock %}
 {% block content %}
-<h3>42 Coffee Cups Test Assignment</h3>
+<h1>42 Coffee Cups Test Assignment</h1>
 <div class="row">
     <div class="column">
         <p>{{info.first_name}}</p>
@@ -38,3 +38,9 @@
     </div>
 </div>
 {% endblock content %}
+
+{% block footer %}
+    <p>
+        <a href="{% url 'log' %}">requests</a>
+    </p>
+{% endblock footer %}
