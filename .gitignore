@@ -4,3 +4,5 @@
 .env/
 *.sqlite
 .coverage
+test42/local_settings.py
+supervisord.conf
