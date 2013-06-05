@@ -113,6 +113,11 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+#import os
+#FIXTURE_DIRS = (
+#   os.path.join(os.path.abspath(os.path.dirname(__file__)), 'apps/homepage/fixtures/'),
+#)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -156,3 +161,8 @@ LOGGING = {
         },
     }
 }
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
