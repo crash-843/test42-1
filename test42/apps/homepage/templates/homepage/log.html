@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}42 Coffee Cups Test Assignment{% endblock %}
+{% block content %}
+<h1>Requests</h1>
+<ul>
+{% for entry in entry_list %}
+    <li>{{ entry }}</li>
+{% endfor %}
+</ul>
+{% endblock content %}
+
+{% block footer %}
+    <p>
+        <a href="{% url 'home' %}">home</a>
+    </p>
+{% endblock footer %}

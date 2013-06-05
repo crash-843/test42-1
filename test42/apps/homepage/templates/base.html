@@ -7,9 +7,15 @@
     </head>
     <body>
         {% block body %}
-            <div id="content">
-            {% block content %}
-            {% endblock content %}
+            <div id="layout">
+                <div id="content">
+                {% block content %}
+                {% endblock content %}
+                </div>
+                <div id="footer">
+                {% block footer %}
+                {% endblock footer %}
+                </div>
             </div>
         {% endblock body %}
     </body>
