@@ -1,4 +1,6 @@
 # Django settings for test42 project.
+import django.conf.global_settings as DEFAULT_SETTINGS
+
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -103,8 +105,7 @@ MIDDLEWARE_CLASSES = (
     'test42.apps.homepage.middleware.Requests'
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
+TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
     'test42.apps.homepage.context_processors.add_settings',
 )
 
