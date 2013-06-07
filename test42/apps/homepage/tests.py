@@ -88,6 +88,7 @@ class MiddlewareModelTestCase(TestCase):
         self.assertEqual(entry.url, reverse('home'))
         self.assertEqual(entry.status, 200)
 
+
 class ContextProcessorTestCase(TestCase):
     def setUp(self):
         self.client = Client()
