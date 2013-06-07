@@ -5,7 +5,8 @@ from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     url('', include('test42.apps.homepage.urls')),
 
     # Examples:
@@ -20,6 +21,7 @@ urlpatterns = patterns('',
 )
 
 if settings.DEBUG:
-    urlpatterns += patterns('django.contrib.staticfiles.views',
+    urlpatterns += patterns(
+        'django.contrib.staticfiles.views',
         url(r'^static/(?P<path>.*)$', 'serve'),
     )
