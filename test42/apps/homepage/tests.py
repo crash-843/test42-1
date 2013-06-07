@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.test import RequestFactory, TestCase
 from django.test.client import Client
+from django.conf import settings
 from .models import Info, LogEntry
 from .views import Home
 
@@ -86,3 +87,11 @@ class MiddlewareModelTestCase(TestCase):
         self.assertEqual(entry.method, "GET")
         self.assertEqual(entry.url, reverse('home'))
         self.assertEqual(entry.status, 200)
+
+class ContextProcessorTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_info_model(self):
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.context[-1]['settings'], settings)
