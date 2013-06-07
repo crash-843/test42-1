@@ -11,11 +11,11 @@ class InfoModelTestCase(TestCase):
             first_name="Bob",
             last_name="Jones",
             birthday="1990-01-01",
-            bio = "My biography",
-            email = "bob@jones.com",
-            jabber = "bob@jabber.org",
-            skype = "bobjones",
-            contacts = "Contacts"
+            bio="My biography",
+            email="bob@jones.com",
+            jabber="bob@jabber.org",
+            skype="bobjones",
+            contacts="Contacts"
         )
         self.info.save()
 
@@ -34,9 +34,9 @@ class InfoModelTestCase(TestCase):
 class LogEntryModelTestCase(TestCase):
     def setUp(self):
         self.logentry = LogEntry.objects.create(
-            method = "GET",
-            url = "/about/",
-            status = 200
+            method="GET",
+            url="/about/",
+            status=200
         )
         self.logentry.save()
 
@@ -44,7 +44,6 @@ class LogEntryModelTestCase(TestCase):
         self.assertEqual(self.logentry.method, "GET")
         self.assertEqual(self.logentry.url, "/about/")
         self.assertEqual(self.logentry.status, 200)
-
 
 
 class ViewTestCase(TestCase):
@@ -87,4 +86,3 @@ class MiddlewareModelTestCase(TestCase):
         self.assertEqual(entry.method, "GET")
         self.assertEqual(entry.url, reverse('home'))
         self.assertEqual(entry.status, 200)
-
