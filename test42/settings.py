@@ -104,6 +104,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
     'test42.apps.homepage.context_processors.add_settings',
 )
 
