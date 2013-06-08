@@ -1,4 +1,3 @@
-from django.shortcuts import render_to_response
 from django.views.generic import TemplateView, ListView
 from annoying.functions import get_object_or_None
 from .models import Info, LogEntry

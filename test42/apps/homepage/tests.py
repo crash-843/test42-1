@@ -1,6 +1,5 @@
 from django.core.urlresolvers import reverse
 from django.test import RequestFactory, TestCase
-from django.test.client import Client
 from django.conf import settings
 from .models import Info, LogEntry
 from .views import Home
@@ -48,8 +47,6 @@ class LogEntryModelTestCase(TestCase):
 
 
 class ViewTestCase(TestCase):
-    def setUp(self):
-        self.client = Client()
 
     def test_home_context(self):
         request = RequestFactory().get(reverse('home'))
@@ -78,11 +75,9 @@ class ViewTestCase(TestCase):
 
 
 class MiddlewareModelTestCase(TestCase):
-    def setUp(self):
-        self.client = Client()
 
-    def test_info_model(self):
-        response = self.client.get(reverse('home'))
+    def test_middleware(self):
+        self.client.get(reverse('home'))
         entry = LogEntry.objects.latest()
         self.assertEqual(entry.method, "GET")
         self.assertEqual(entry.url, reverse('home'))
@@ -90,9 +85,7 @@ class MiddlewareModelTestCase(TestCase):
 
 
 class ContextProcessorTestCase(TestCase):
-    def setUp(self):
-        self.client = Client()
 
-    def test_info_model(self):
+    def test_context_processor(self):
         response = self.client.get(reverse('home'))
         self.assertEqual(response.context[-1]['settings'], settings)
