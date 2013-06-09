@@ -1,10 +1,16 @@
+import os.path
+import tempfile
+from django.conf import settings
+from django.core.files import File
 from django.core.urlresolvers import reverse
 from django.test import RequestFactory, TestCase
-from django.conf import settings
-from .models import Info, LogEntry
-from .views import Home
+from django.test.utils import override_settings
+from ..models import Info, LogEntry
+from ..views import Home
 
+DATA_DIR = os.path.join(os.path.normpath(os.path.dirname(__file__)), "data/")
 
+@override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class InfoModelTestCase(TestCase):
     def setUp(self):
         self.info = Info.objects.create(
@@ -15,7 +21,8 @@ class InfoModelTestCase(TestCase):
             email="bob@jones.com",
             jabber="bob@jabber.org",
             skype="bobjones",
-            contacts="Contacts"
+            contacts="Contacts",
+            photo=File(open(os.path.join(DATA_DIR, "Lenna.jpg")))
         )
         self.info.save()
 
@@ -29,6 +36,7 @@ class InfoModelTestCase(TestCase):
         self.assertEqual(unicode(self.info.jabber), "bob@jabber.org")
         self.assertEqual(unicode(self.info.skype), "bobjones")
         self.assertEqual(unicode(self.info.contacts), "Contacts")
+        self.failUnless(open(self.info.photo.path), 'file not found')
 
 
 class LogEntryModelTestCase(TestCase):
