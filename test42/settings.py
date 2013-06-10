@@ -1,6 +1,9 @@
 # Django settings for test42 project.
+import os.path
 import django.conf.global_settings as DEFAULT_SETTINGS
+import test42
 
+PROJECT_ROOT = os.path.normpath(os.path.dirname(test42.__path__[0]))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -52,12 +55,12 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -106,6 +109,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = DEFAULT_SETTINGS.TEMPLATE_CONTEXT_PROCESSORS + (
+    'django.core.context_processors.request', #for admin tools
     'test42.apps.homepage.context_processors.add_settings',
 )
 
@@ -121,6 +125,10 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'admin_tools',
+    'admin_tools.theming',
+    'admin_tools.menu',
+    'admin_tools.dashboard',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -133,6 +141,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'test42.apps.homepage',
     'south',
+    'easy_thumbnails',
 )
 
 # A sample logging configuration. The only tangible logging

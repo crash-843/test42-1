@@ -4,5 +4,7 @@
 .env/
 *.sqlite
 .coverage
+media/
+static/
 test42/local_settings.py
 supervisord.conf

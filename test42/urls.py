@@ -13,6 +13,8 @@ urlpatterns = patterns(
     # url(r'^$', 'test42.views.home', name='home'),
     # url(r'^test42/', include('test42.foo.urls')),
 
+    url(r'^admin_tools/', include('admin_tools.urls')),
+
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
@@ -21,7 +23,8 @@ urlpatterns = patterns(
 )
 
 if settings.DEBUG:
+    from django.conf.urls.static import static
     urlpatterns += patterns(
         'django.contrib.staticfiles.views',
         url(r'^static/(?P<path>.*)$', 'serve'),
-    )
+    ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

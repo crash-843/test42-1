@@ -1,5 +1,9 @@
 {% extends "base.html" %}
+
+{% load thumbnail %}
+
 {% block title %}42 Coffee Cups Test Assignment{% endblock %}
+
 {% block content %}
 <h1>42 Coffee Cups Test Assignment</h1>
 <div class="row">
@@ -9,6 +13,7 @@
         {% if info.birthday %}
             <p>{{info.birthday}}</p>
         {% endif %}
+        <p>Photo:</p>
     </div>
     <div class="column">
         <p>Contacts</p>
@@ -25,15 +30,18 @@
 </div>
     <div class="row">
     <div class="column">
-        {% if info.bio %}
-            <p>Bio:</p>
-            <p>{{info.bio|linebreaksbr}}</p>
+        {% if info.photo %}
+            <img src="{% thumbnail info.photo 300x400 crop %}"/>
         {% endif %}
     </div>
     <div class="column">
         {% if info.contacts %}
             <p>Other contacts:</p>
             <p>{{info.contacts|linebreaksbr}}</p>
+        {% endif %}
+        {% if info.bio %}
+            <p>Bio:</p>
+            <p>{{info.bio|linebreaksbr}}</p>
         {% endif %}
     </div>
 </div>

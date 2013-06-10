@@ -6,6 +6,7 @@ class Info(models.Model):
     last_name = models.CharField(max_length=30)
     birthday = models.DateField(null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
+    photo = models.ImageField(upload_to="photos", null=True, blank=True)
 
     email = models.EmailField(null=True, blank=True)
     jabber = models.EmailField(null=True, blank=True)
