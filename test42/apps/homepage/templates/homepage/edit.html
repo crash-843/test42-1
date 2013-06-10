@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% load thumbnail %}
+
+{% block title %}42 Coffee Cups Test Assignment{% endblock %}
+
+{% block content %}
+<h1>42 Coffee Cups Test Assignment</h1>
+<form action="{% url 'edit' %}" enctype="multipart/form-data" method="post">
+    <div class="row">
+        <div class="column">
+            <p>{{form.first_name.label_tag}}
+            {{form.first_name}}</p>
+            <p>{{form.last_name.label_tag}}
+            {{form.last_name}}</p>
+            <p>{{form.birthday.label_tag}}
+            {{form.birthday}}</p>
+        </div>
+        <div class="column">
+            <p>{{form.email.label_tag}}
+            {{form.email}}</p>
+            <p>{{form.jabber.label_tag}}
+            {{form.jabber}}</p>
+            <p>{{form.skype.label_tag}}
+            {{form.skype}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <p>{{form.photo.label_tag}}</p>
+            <p>{{form.photo}}</p>
+        </div>
+        <div class="column">
+            <p>{{form.contacts.label_tag}}
+            {{form.contacts}}</p>
+            <p>{{form.bio.label_tag}}
+            {{form.bio}}</p>
+
+        </div>
+    </div>
+    <div class="row">
+        <p>
+            <input type="submit" value="Save">
+            <a class="cancel" href="{% url 'home' %}">Cancel</a>
+        </p>
+    </div>
+{% csrf_token %}
+</form>
+{% endblock content %}
+
+{% block footer %}
+    <p>
+        <a href="{% url 'log' %}">requests</a>
+    </p>
+{% endblock footer %}
