@@ -25,3 +25,30 @@ label {
 .cancel {
   padding-left: 12px;
 }
+.menu {
+  float: right;
+  margin: 12px 0;
+  padding: 0;
+}
+.menu li {
+  display: inline;
+  list-style-type: none;
+  padding-right: 12px;
+}
+.login-box {
+  margin: 180px auto;
+  width: 300px;
+  border: 1px solid #CCCCCC;
+  padding: 12px;
+}
+.login-box .title {
+  margin-top: 0;
+  text-align: center;
+}
+.login-box .field {
+  margin: 4px 0;
+}
+.login-box .control {
+  margin: 12px 0 0;
+  text-align: right;
+}

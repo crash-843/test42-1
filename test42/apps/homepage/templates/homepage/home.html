@@ -5,6 +5,14 @@
 {% block title %}42 Coffee Cups Test Assignment{% endblock %}
 
 {% block content %}
+<ul class="menu"> 
+    {% if  request.user.is_authenticated %}
+        <li><a href="{% url 'edit' %}">edit</a></li>
+        <li><a href="{% url 'logout' %}">logout</a></li>
+    {% else %}
+        <li><a href="{% url 'login' %}">login</a></li>
+    {% endif %}
+</ul>
 <h1>42 Coffee Cups Test Assignment</h1>
 <div class="row">
     <div class="column">
