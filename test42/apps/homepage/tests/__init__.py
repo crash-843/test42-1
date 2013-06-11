@@ -56,6 +56,8 @@ class LogEntryModelTestCase(TestCase):
 
 
 class ViewTestCase(TestCase):
+    def setUp(self):
+        self.auth = {"username":"admin", "password":"admin"}
 
     def test_home_context(self):
         response = self.client.get(reverse('home'))
@@ -79,7 +81,18 @@ class ViewTestCase(TestCase):
         entry_list = response.context[-1]['entry_list']
         self.assertEqual(len(entry_list), 10)
 
-    def test_edit_form_context(self):
+    def test_auth(self):
+        self.assertEqual(self.client.get(reverse('logout')).status_code, 302)
+        self.assertEqual(self.client.get(reverse('home')).status_code, 200)
+        self.assertEqual(self.client.get(reverse('log')).status_code, 200)
+        self.assertEqual(self.client.get(reverse('edit')).status_code, 302)
+        self.client.post(reverse('login'), self.auth)
+        self.assertEqual(self.client.get(reverse('edit')).status_code, 200)
+        self.assertEqual(self.client.get(reverse('logout')).status_code, 302)
+        self.assertEqual(self.client.get(reverse('edit')).status_code, 302)
+
+    def test_edit_form(self):
+        self.client.post(reverse('login'), self.auth)
         upload_file = open(os.path.join(DATA_DIR, "Lenna.jpg"), "rb")
         data = dict(
             first_name="Bob",
