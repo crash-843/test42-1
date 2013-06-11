@@ -15,6 +15,11 @@
             {{form.last_name}}</p>
             <p>{{form.birthday.label_tag}}
             {{form.birthday}}</p>
+            <p>{{form.photo.label_tag}}
+            {{form.photo}}</p>
+            {% if form.instance.photo %}
+                <img src="{% thumbnail form.instance.photo 300x400 crop %}"/>
+            {% endif %}
         </div>
         <div class="column">
             <p>{{form.email.label_tag}}
@@ -23,19 +28,10 @@
             {{form.jabber}}</p>
             <p>{{form.skype.label_tag}}
             {{form.skype}}</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="column">
-            <p>{{form.photo.label_tag}}</p>
-            <p>{{form.photo}}</p>
-        </div>
-        <div class="column">
-            <p>{{form.contacts.label_tag}}
-            {{form.contacts}}</p>
-            <p>{{form.bio.label_tag}}
-            {{form.bio}}</p>
-
+            <p>{{form.contacts.label_tag}}</p>
+            <p>{{form.contacts}}</p>
+            <p>{{form.bio.label_tag}}</p>
+            <p>{{form.bio}}</p>
         </div>
     </div>
     <div class="row">
