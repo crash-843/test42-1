@@ -2,6 +2,7 @@ import os.path
 import tempfile
 from django.conf import settings
 from django.core.files import File
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.urlresolvers import reverse
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
@@ -22,7 +23,7 @@ class InfoModelTestCase(TestCase):
             jabber="bob@jabber.org",
             skype="bobjones",
             contacts="Contacts",
-            photo=File(open(os.path.join(DATA_DIR, "Lenna.jpg")))
+            photo=File(open(os.path.join(DATA_DIR, "Lenna.jpg"), "rb"))
         )
         self.info.save()
 
@@ -57,9 +58,7 @@ class LogEntryModelTestCase(TestCase):
 class ViewTestCase(TestCase):
 
     def test_home_context(self):
-        request = RequestFactory().get(reverse('home'))
-        home = Home.as_view()
-        response = home(request)
+        response = self.client.get(reverse('home'))
         self.assertContains(response, "Constantine", status_code=200)
         self.assertContains(response, "Fedenko", status_code=200)
         self.assertContains(response, "My bio", status_code=200)
@@ -69,8 +68,7 @@ class ViewTestCase(TestCase):
         self.assertContains(response, "cfedenko", status_code=200)
         self.assertContains(response, "My Contacts", status_code=200)
         Info.objects.all().delete()
-        request = RequestFactory().get(reverse('home'))
-        response = home(request)
+        response = self.client.get(reverse('home'))
         self.assertNotContains(response, "Constantine", status_code=200)
 
     def test_log_context(self):
@@ -80,6 +78,31 @@ class ViewTestCase(TestCase):
         response = self.client.get(reverse('log'))
         entry_list = response.context[-1]['entry_list']
         self.assertEqual(len(entry_list), 10)
+
+    def test_edit_form_context(self):
+        upload_file = open(os.path.join(DATA_DIR, "Lenna.jpg"), "rb")
+        data = dict(
+            first_name="Bob",
+            last_name="Jones",
+            birthday="1990-01-01",
+            bio="My biography",
+            email="bob@jones.com",
+            jabber="bob@jabber.org",
+            skype="bobjones",
+            contacts="Bob Contacts",
+            photo=SimpleUploadedFile(upload_file.name, upload_file.read())
+        )
+        response = self.client.post(reverse('edit'), data)
+        self.assertEqual(response.status_code, 302)
+        response = self.client.get(reverse('home'))
+        self.assertContains(response, "Bob", status_code=200)
+        self.assertContains(response, "Jones", status_code=200)
+        self.assertContains(response, "My biography", status_code=200)
+        self.assertContains(response, "My bio", status_code=200)
+        self.assertContains(response, "bob@jones.com", status_code=200)
+        self.assertContains(response, "bob@jabber.org", status_code=200)
+        self.assertContains(response, "bobjones", status_code=200)
+        self.assertContains(response, "Bob Contacts", status_code=200)
 
 
 class MiddlewareModelTestCase(TestCase):
