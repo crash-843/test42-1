@@ -4,12 +4,12 @@ from django.conf import settings
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.urlresolvers import reverse
-from django.test import RequestFactory, TestCase
+from django.test import TestCase
 from django.test.utils import override_settings
 from ..models import Info, LogEntry
-from ..views import Home
 
 DATA_DIR = os.path.join(os.path.normpath(os.path.dirname(__file__)), "data/")
+
 
 @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
 class InfoModelTestCase(TestCase):
@@ -57,7 +57,7 @@ class LogEntryModelTestCase(TestCase):
 
 class ViewTestCase(TestCase):
     def setUp(self):
-        self.auth = {"username":"admin", "password":"admin"}
+        self.auth = {"username": "admin", "password": "admin"}
 
     def test_home_context(self):
         response = self.client.get(reverse('home'))

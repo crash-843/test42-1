@@ -13,6 +13,7 @@ class Home(TemplateView):
         context['info'] = get_object_or_None(Info, pk=1)
         return context
 
+
 class Edit(UpdateView):
     template_name = "homepage/edit.html"
     model = Info
@@ -21,6 +22,7 @@ class Edit(UpdateView):
 
     def get_object(self, queryset=None):
         return get_object_or_None(self.model, pk=1)
+
 
 class Log(ListView):
     template_name = "homepage/log.html"
