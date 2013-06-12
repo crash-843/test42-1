@@ -56,3 +56,14 @@ label {
   color: red;
   padding-left: 130px;
 }
+.ajax-upload-preview-area {
+    display: inline-block;
+    text-align:  center;
+}
+.ajax-upload-preview-area img {
+    display: block;
+    max-width: 300px;
+    max-height: 400px;
+    margin: 0 auto;
+    margin-top: 5px;
+}

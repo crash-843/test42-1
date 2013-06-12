@@ -23,12 +23,11 @@
             <p>{{form.birthday.label_tag}}
             {{form.birthday}}</p>
             {{form.birthday.errors}}
-            <p>{{form.photo.label_tag}}
-            {{form.photo}}</p>
+            <p>{{form.photo.label_tag}}</p>
+            <p>{{form.photo}}</p>
+            <div class="ajax-upload-preview-area">
+            </div>
             {{form.photo.errors}}
-            {% if form.instance.photo %}
-                <img src="{% thumbnail form.instance.photo 300x400 crop %}"/>
-            {% endif %}
         </div>
         <div class="column">
             <p>{{form.email.label_tag}}
@@ -69,9 +68,14 @@
     <script src="{% static "homepage/js/lib/moment.min.js" %}"></script>
     <script src="{% static "homepage/js/lib/pikaday.js" %}"></script>
     <script src="{% static "homepage/js/lib/pikaday.jquery.js" %}"></script>
+    <script src="{% static "ajax_upload/js/jquery.iframe-transport.js" %}"></script>
+    <script src="{% static "homepage/js/ajax-upload-widget.js" %}"></script>
     <script>
-    var $picker = $('.date-picker').pikaday({
-        format: 'YYYY-MM-DD'
-    });
+        $(function() {
+            AjaxUploadWidget.autoDiscover();
+            $('.date-picker').pikaday({
+                format: 'YYYY-MM-DD'
+            });
+        });
     </script>
 {% endblock body_extra %}
