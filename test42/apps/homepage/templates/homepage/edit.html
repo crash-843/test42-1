@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 
 {% load thumbnail %}
+{% load staticfiles %}
 
 {% block title %}42 Coffee Cups Test Assignment{% endblock %}
+
+{% block head_extra %}
+    <link rel="stylesheet" type="text/css" href="{% static "homepage/css/pikaday.css" %}">
+{% endblock head_extra %}
 
 {% block content %}
 <h1>42 Coffee Cups Test Assignment</h1>
@@ -11,12 +16,16 @@
         <div class="column">
             <p>{{form.first_name.label_tag}}
             {{form.first_name}}</p>
+            {{form.first_name.errors}}
             <p>{{form.last_name.label_tag}}
             {{form.last_name}}</p>
+            {{form.last_name.errors}}
             <p>{{form.birthday.label_tag}}
             {{form.birthday}}</p>
+            {{form.birthday.errors}}
             <p>{{form.photo.label_tag}}
             {{form.photo}}</p>
+            {{form.photo.errors}}
             {% if form.instance.photo %}
                 <img src="{% thumbnail form.instance.photo 300x400 crop %}"/>
             {% endif %}
@@ -24,14 +33,19 @@
         <div class="column">
             <p>{{form.email.label_tag}}
             {{form.email}}</p>
+            {{form.email.errors}}
             <p>{{form.jabber.label_tag}}
             {{form.jabber}}</p>
+            {{form.jabber.errors}}
             <p>{{form.skype.label_tag}}
             {{form.skype}}</p>
+            {{form.skype.errors}}
             <p>{{form.contacts.label_tag}}</p>
             <p>{{form.contacts}}</p>
+            {{form.contacts.errors}}
             <p>{{form.bio.label_tag}}</p>
             <p>{{form.bio}}</p>
+            {{form.bio.errors}}
         </div>
     </div>
     <div class="row">
@@ -49,3 +63,15 @@
         <a href="{% url 'log' %}">requests</a>
     </p>
 {% endblock footer %}
+
+{% block body_extra %}
+    <script src="{% static "homepage/js/lib/jquery-2.0.2.min.js" %}"></script>
+    <script src="{% static "homepage/js/lib/moment.min.js" %}"></script>
+    <script src="{% static "homepage/js/lib/pikaday.js" %}"></script>
+    <script src="{% static "homepage/js/lib/pikaday.jquery.js" %}"></script>
+    <script>
+    var $picker = $('.date-picker').pikaday({
+        format: 'YYYY-MM-DD'
+    });
+    </script>
+{% endblock body_extra %}

@@ -1,5 +1,5 @@
-body {
-  font-family: Georgia,"Bitstream Charter",serif;
+body, .pika-single, .pika-button{
+  font-family: Georgia,"Bitstream Charter",serif !important;
 }
 
 #layout {
@@ -51,4 +51,8 @@ label {
 .login-box .control {
   margin: 12px 0 0;
   text-align: right;
+}
+.errorlist {
+  color: red;
+  padding-left: 130px;
 }
