@@ -37,7 +37,10 @@
             {% endfor %}
             </div>
         </div>
-        <div><input type="submit" value="Save" /></div>
+        <div class="field">
+            <input type="submit" value="Save" />
+            <a class="cancel" href="{% url 'home' %}">Cancel</a>
+        </div>
         {% for field in form.hidden_fields %}
             {{ field }}
         {% endfor %}
@@ -47,7 +50,7 @@
 
 {% block footer %}
     <p>
-        <a href="{% url 'log' %}">requests</a>
+        <a href="{% url 'log' %}">Requests</a>
     </p>
 {% endblock footer %}
 

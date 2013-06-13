@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 
 {% load thumbnail %}
+{% load homepage_extras %}
 
 {% block title %}42 Coffee Cups Test Assignment{% endblock %}
 
 {% block content %}
 <ul class="menu"> 
     {% if  request.user.is_authenticated %}
-        <li><a href="{% url 'edit' %}">edit</a></li>
-        <li><a href="{% url 'logout' %}">logout</a></li>
+        <li><a href="{% url 'edit' %}">Edit</a></li>
+        <li><a href="{% edit_link info %}">(admin)</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
     {% else %}
-        <li><a href="{% url 'login' %}">login</a></li>
+        <li><a href="{% url 'login' %}">Login</a></li>
     {% endif %}
 </ul>
 <h1>42 Coffee Cups Test Assignment</h1>
@@ -57,6 +59,6 @@
 
 {% block footer %}
     <p>
-        <a href="{% url 'log' %}">requests</a>
+        <a href="{% url 'log' %}">Requests</a>
     </p>
 {% endblock footer %}
