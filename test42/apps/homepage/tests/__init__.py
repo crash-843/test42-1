@@ -64,7 +64,7 @@ class ViewTestCase(TestCase):
         self.assertContains(response, "Constantine", status_code=200)
         self.assertContains(response, "Fedenko", status_code=200)
         self.assertContains(response, "My bio", status_code=200)
-        self.assertContains(response, "My bio", status_code=200)
+        self.assertContains(response, "1988", status_code=200)
         self.assertContains(response, "cfedenko@gmail.com", status_code=200)
         self.assertContains(response, "fedenko@jabber.org", status_code=200)
         self.assertContains(response, "cfedenko", status_code=200)
@@ -107,15 +107,30 @@ class ViewTestCase(TestCase):
         )
         response = self.client.post(reverse('edit'), data)
         self.assertEqual(response.status_code, 302)
+        upload_file = open(os.path.join(DATA_DIR, "Lenna.jpg"), "rb")
+        data = dict(
+            first_name="Constantine",
+            last_name="Fedenko",
+            birthday="1988-03-23",
+            bio="My bio",
+            email="cfedenko@gmail.com",
+            jabber="fedenko@jabber.org",
+            skype="cfedenko",
+            contacts="My Contacts",
+            photo=SimpleUploadedFile(upload_file.name, upload_file.read())
+        )
+        response = self.client.post(reverse('edit'), data, HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "photo", status_code=200)
         response = self.client.get(reverse('home'))
-        self.assertContains(response, "Bob", status_code=200)
-        self.assertContains(response, "Jones", status_code=200)
-        self.assertContains(response, "My biography", status_code=200)
+        self.assertContains(response, "Constantine", status_code=200)
+        self.assertContains(response, "Fedenko", status_code=200)
+        self.assertContains(response, "1988", status_code=200)
         self.assertContains(response, "My bio", status_code=200)
-        self.assertContains(response, "bob@jones.com", status_code=200)
-        self.assertContains(response, "bob@jabber.org", status_code=200)
-        self.assertContains(response, "bobjones", status_code=200)
-        self.assertContains(response, "Bob Contacts", status_code=200)
+        self.assertContains(response, "cfedenko@gmail.com", status_code=200)
+        self.assertContains(response, "fedenko@jabber.org", status_code=200)
+        self.assertContains(response, "cfedenko", status_code=200)
+        self.assertContains(response, "My Contacts", status_code=200)
 
 
 class MiddlewareModelTestCase(TestCase):
