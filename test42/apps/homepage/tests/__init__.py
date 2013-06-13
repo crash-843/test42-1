@@ -1,8 +1,10 @@
 import os.path
 import tempfile
+from StringIO import StringIO
 from django.conf import settings
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from django.template import Template, Context
 from django.test import TestCase
@@ -108,7 +110,7 @@ class ViewTestCase(TestCase):
         )
         response = self.client.post(reverse('edit'), data)
         self.assertEqual(response.status_code, 302)
-        upload_file = open(os.path.join(DATA_DIR, "Lenna.jpg"), "rb")
+        upload_file.seek(0)
         data = dict(
             first_name="Constantine",
             last_name="Fedenko",
@@ -123,7 +125,7 @@ class ViewTestCase(TestCase):
         response = self.client.post(reverse('edit'), data,
                                     HTTP_X_REQUESTED_WITH="XMLHttpRequest")
         self.assertEqual(response.status_code, 200)
-        upload_file = open(os.path.join(DATA_DIR, "Lenna.jpg"), "rb")
+        upload_file.seek(0)
         data = dict(
             first_name="Constantine",
             last_name="Fedenko",
@@ -190,3 +192,26 @@ class TemplateTagsTestCase(TestCase):
         }))
         self.assertEqual(out, reverse("admin:homepage_info_change",
                                       args=(self.info.pk,)))
+
+
+class DjangoCommandTestCase(TestCase):
+
+    def test_command(self):
+        stdout_content = StringIO()
+        stderr_content = StringIO()
+        call_command("objcount", stdout=stdout_content, stderr=stderr_content)
+        stdout_content.seek(0)
+        stderr_content.seek(0)
+        info_line = None
+        for line in stdout_content:
+            if Info.__name__ in line:
+                info_line = line.strip()
+        self.assertEqual(info_line,
+                         "{0}: {1}".format(Info.__name__,
+                                           Info.objects.count()))
+        for line in stderr_content:
+            if Info.__name__ in line:
+                info_line = line.strip()
+        self.assertEqual(info_line,
+                         "error: {0}: {1}".format(Info.__name__,
+                                                  Info.objects.count()))
