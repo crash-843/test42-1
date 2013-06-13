@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.urlresolvers import reverse
+from django.template import Template, Context
 from django.test import TestCase
 from django.test.utils import override_settings
 from ..models import Info, LogEntry
@@ -163,3 +164,29 @@ class ContextProcessorTestCase(TestCase):
     def test_context_processor(self):
         response = self.client.get(reverse('home'))
         self.assertEqual(response.context[-1]['settings'], settings)
+
+
+class TemplateTagsTestCase(TestCase):
+    def setUp(self):
+        self.info = Info.objects.create(
+            first_name="Bob",
+            last_name="Jones",
+            birthday="1990-01-01",
+            bio="My biography",
+            email="bob@jones.com",
+            jabber="bob@jabber.org",
+            skype="bobjones",
+            contacts="Contacts",
+            photo=File(open(os.path.join(DATA_DIR, "Lenna.jpg"), "rb"))
+        )
+        self.info.save()
+
+    def test_admin_url(self):
+        out = Template(
+            "{% load homepage_extras %}"
+            "{% edit_link info %}"
+        ).render(Context({
+            'info': self.info
+        }))
+        self.assertEqual(out, reverse("admin:homepage_info_change",
+                                      args=(self.info.pk,)))
