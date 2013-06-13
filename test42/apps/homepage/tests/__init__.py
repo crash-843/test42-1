@@ -122,7 +122,21 @@ class ViewTestCase(TestCase):
         response = self.client.post(reverse('edit'), data,
                                     HTTP_X_REQUESTED_WITH="XMLHttpRequest")
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "photo", status_code=200)
+        upload_file = open(os.path.join(DATA_DIR, "Lenna.jpg"), "rb")
+        data = dict(
+            first_name="Constantine",
+            last_name="Fedenko",
+            birthday="1988-03",
+            bio="My bio",
+            email="cfedenko@gmail.com",
+            jabber="fedenko@jabber.org",
+            skype="cfedenko",
+            contacts="My Contacts",
+            photo=SimpleUploadedFile(upload_file.name, upload_file.read())
+        )
+        response = self.client.post(reverse('edit'), data,
+                                    HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+        self.assertContains(response, "Enter a valid date.", status_code=400)
         response = self.client.get(reverse('home'))
         self.assertContains(response, "Constantine", status_code=200)
         self.assertContains(response, "Fedenko", status_code=200)
