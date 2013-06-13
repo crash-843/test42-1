@@ -119,7 +119,8 @@ class ViewTestCase(TestCase):
             contacts="My Contacts",
             photo=SimpleUploadedFile(upload_file.name, upload_file.read())
         )
-        response = self.client.post(reverse('edit'), data, HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+        response = self.client.post(reverse('edit'), data,
+                                    HTTP_X_REQUESTED_WITH="XMLHttpRequest")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "photo", status_code=200)
         response = self.client.get(reverse('home'))

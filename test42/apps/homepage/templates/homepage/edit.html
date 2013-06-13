@@ -10,52 +10,39 @@
 {% endblock head_extra %}
 
 {% block content %}
-<h1>42 Coffee Cups Test Assignment</h1>
-<form action="{% url 'edit' %}" enctype="multipart/form-data" method="post">
-    <div class="row">
-        <div class="column">
-            <p>{{form.first_name.label_tag}}
-            {{form.first_name}}</p>
-            {{form.first_name.errors}}
-            <p>{{form.last_name.label_tag}}
-            {{form.last_name}}</p>
-            {{form.last_name.errors}}
-            <p>{{form.birthday.label_tag}}
-            {{form.birthday}}</p>
-            {{form.birthday.errors}}
-            <p>{{form.photo.label_tag}}
-            {{form.photo}}</p>
-            {{form.photo.errors}}
-            {% if form.instance.photo %}
-                <img src="{% thumbnail form.instance.photo 300x400 crop %}"/>
-            {% endif %}
+    <h1>42 Coffee Cups Test Assignment</h1>
+    <form id="edit-form" action="{% url 'edit' %}" enctype="multipart/form-data" method="post">
+        <div class="row">
+            <div class="column">
+            {% for field in form.visible_fields|slice:":4" %}
+                <div id="{{field.name}}_container" class="field">
+                    {{ field.errors }}
+                    {{ field.label_tag }} {{ field }}
+                    {% ifequal field.name "photo" %}
+                        <div id="photo-preview" >
+                        {% if form.instance.photo %}
+                            <img src="{% thumbnail form.instance.photo 300x400 crop %}"/>
+                        {% endif %}
+                        </div>
+                    {% endifequal %}
+                </div>
+            {% endfor %}
+            </div>
+            <div class="column">
+            {% for field in form.visible_fields|slice:"-5:" %}
+                <div id="{{field.name}}_container" class="field">
+                    {{ field.errors }}
+                    {{ field.label_tag }} {{ field }}
+                </div>
+            {% endfor %}
+            </div>
         </div>
-        <div class="column">
-            <p>{{form.email.label_tag}}
-            {{form.email}}</p>
-            {{form.email.errors}}
-            <p>{{form.jabber.label_tag}}
-            {{form.jabber}}</p>
-            {{form.jabber.errors}}
-            <p>{{form.skype.label_tag}}
-            {{form.skype}}</p>
-            {{form.skype.errors}}
-            <p>{{form.contacts.label_tag}}</p>
-            <p>{{form.contacts}}</p>
-            {{form.contacts.errors}}
-            <p>{{form.bio.label_tag}}</p>
-            <p>{{form.bio}}</p>
-            {{form.bio.errors}}
-        </div>
-    </div>
-    <div class="row">
-        <p>
-            <input type="submit" value="Save">
-            <a class="cancel" href="{% url 'home' %}">Cancel</a>
-        </p>
-    </div>
-{% csrf_token %}
-</form>
+        <div><input type="submit" value="Save" /></div>
+        {% for field in form.hidden_fields %}
+            {{ field }}
+        {% endfor %}
+        {% csrf_token %}
+    </form>
 {% endblock content %}
 
 {% block footer %}
@@ -67,11 +54,57 @@
 {% block body_extra %}
     <script src="{% static "homepage/js/lib/jquery-2.0.2.min.js" %}"></script>
     <script src="{% static "homepage/js/lib/moment.min.js" %}"></script>
+    <script src="{% static "homepage/js/spin.js" %}"></script>
     <script src="{% static "homepage/js/lib/pikaday.js" %}"></script>
     <script src="{% static "homepage/js/lib/pikaday.jquery.js" %}"></script>
+    <script src="{% static "homepage/js/lib/jquery.form.min.js" %}"></script>
     <script>
-    var $picker = $('.date-picker').pikaday({
-        format: 'YYYY-MM-DD'
-    });
+        function before(formData, jqForm, options) { 
+            $("#edit-form").spin();
+            $("#edit-form :input").attr("disabled", true);
+            return true; 
+        }
+        function onSuccess(data) {
+            $("#edit-form").spin(false);
+            $("#edit-form :input").attr("disabled", false);
+            $("#photo-preview img").attr("src", data.photo);
+            var $errorlists = $("#edit-form .errorlist");
+            if ($errorlists.length) {
+                $errorlists.remove()
+            }
+        } 
+
+        function error(data) {
+            for(var field in data.responseJSON) {
+                var errors = data.responseJSON[field]
+                if(errors.length) {
+                    var $errorlist = $("#" + field + "_container .errorlist");
+                    if (!$errorlist.length) {
+                        $errorlist = $("<ul>");
+                        $errorlist.addClass("errorlist")
+                        $("#" + field + "_container").prepend($errorlist);
+                    } else {
+                        $errorlist.html("")
+                    }
+                    $.each( errors, function(i, message){
+                      $errorlist.append($("<li>"+message+"</li>"))
+                    });
+                }
+            }
+            $("#edit-form").spin(false);
+            $("#edit-form :input").attr("disabled", false);
+        } 
+    
+        $(function() {
+            $('.date-picker').pikaday({
+                format: 'YYYY-MM-DD'
+            });
+            $('#edit-form').ajaxForm({
+               dataType:  'json',
+               beforeSubmit: before,
+               success: onSuccess,
+               error: error
+            }); 
+        });
     </script>
 {% endblock body_extra %}

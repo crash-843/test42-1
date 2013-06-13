@@ -56,3 +56,27 @@ label {
   color: red;
   padding-left: 130px;
 }
+#sprite {
+    width: 200px;
+    height: 200px;
+    margin: 30px auto;
+    background: #729fcf;
+}
+.spinner {
+    background-color: #000;
+    background-color: rgba(0, 0, 0, 0.6);
+    background-image: url(../img/spinner_light.png);
+    border-radius: 5px;
+    height: 60px;
+    width: 60px;
+    position: absolute;
+}
+.field {
+  padding-bottom: 12px;
+}
+#edit-form #photo-preview{
+  margin-top: 12px;
+}
+#edit-form textarea{
+  margin-top: 16px;
+}
