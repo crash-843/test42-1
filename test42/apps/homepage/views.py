@@ -21,7 +21,8 @@ class AjaxableResponseMixin(object):
     def form_invalid(self, form):
         response = super(AjaxableResponseMixin, self).form_invalid(form)
         if self.request.is_ajax():
-            return self.render_to_json_response(form.errors, status=400)
+            context = self.ajax_invalid_context_data(**form.errors)
+            return self.render_to_json_response(context, status=400)
         else:
             return response
 
@@ -31,12 +32,16 @@ class AjaxableResponseMixin(object):
         # call form.save() for example).
         response = super(AjaxableResponseMixin, self).form_valid(form)
         if self.request.is_ajax():
-            data = {
-                'pk': self.object.pk,
-            }
-            return self.render_to_json_response(data)
+            context = self.ajax_valid_context_data(pk=self.object.pk)
+            return self.render_to_json_response(context)
         else:
             return response
+
+    def ajax_valid_context_data(self, **kwargs):
+        return kwargs
+
+    def ajax_invalid_context_data(self, **kwargs):
+        return kwargs
 
 
 class Home(TemplateView):
@@ -58,17 +63,11 @@ class Edit(AjaxableResponseMixin, UpdateView):
     def get_object(self, queryset=None):
         return get_object_or_None(self.model, pk=1)
 
-    def form_valid(self, form):
-        response = super(AjaxableResponseMixin, self).form_valid(form)
+    def ajax_valid_context_data(self, **kwargs):
+        context = super(Edit, self).ajax_valid_context_data(**kwargs)
         thumbnail = self.object.photo.get_thumbnail(self.thumbnail_options)
-        if self.request.is_ajax():
-            data = {
-                'pk': self.object.pk,
-                'photo': thumbnail.url if thumbnail else None
-            }
-            return self.render_to_json_response(data)
-        else:
-            return response
+        context['photo'] = thumbnail.url if thumbnail else None
+        return context
 
 
 class Log(ListView):
