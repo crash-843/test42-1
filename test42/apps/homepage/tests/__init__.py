@@ -213,6 +213,7 @@ class DjangoCommandTestCase(TestCase):
                          "error: {0}: {1}".format(Info.__name__,
                                                   Info.objects.count()))
 
+
 class ActionsTestCase(TestCase):
     def setUp(self):
         from ..signalhandlers import connect
@@ -233,7 +234,7 @@ class ActionsTestCase(TestCase):
         entry0 = ActionEntry.objects.latest()
         self.assertEqual(entry0.model, Info.__name__)
         self.assertEqual(entry0.action, ActionEntry.CREATE)
-        self.info.first_name="Constantine"
+        self.info.first_name = "Constantine"
         self.info.save()
         entry1 = ActionEntry.objects.latest()
         self.assertEqual(entry1.model, Info.__name__)

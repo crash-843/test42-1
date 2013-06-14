@@ -1,5 +1,14 @@
 from django.contrib import admin
-from .models import Info, LogEntry
+from .models import Info, LogEntry, ActionEntry
+
+
+class LogEntryAdmin(admin.ModelAdmin):
+    list_display = ('created', 'method', 'url', 'status')
+
+
+class ActionEntryAdmin(admin.ModelAdmin):
+    list_display = ('created', 'model', 'action')
 
 admin.site.register(Info)
-admin.site.register(LogEntry)
+admin.site.register(LogEntry, LogEntryAdmin)
+admin.site.register(ActionEntry, ActionEntryAdmin)

@@ -29,7 +29,29 @@ class LogEntry(models.Model):
         get_latest_by = "created"
 
     def __unicode__(self):
-        return "{0} {1} {2} {3}".format(self.created,
-                                        self.method,
-                                        self.url,
-                                        self.status)
+        return "{0} {1} {2}".format(self.method,
+                                    self.url,
+                                    self.status)
+
+
+class ActionEntry(models.Model):
+    CREATE = 0
+    EDIT = 1
+    DELETE = 2
+
+    ACTION_CHOICES = (
+        (CREATE, 'Created'),
+        (EDIT, 'Edited'),
+        (DELETE, 'Deleted'),
+    )
+
+    created = models.DateTimeField(auto_now_add=True)
+    model = models.CharField(max_length=30)
+    action = models.IntegerField(choices=ACTION_CHOICES)
+
+    class Meta:
+        ordering = ["-created"]
+        get_latest_by = "created"
+
+    def __unicode__(self):
+        return "{0} {1}".format(self.model, self.get_action_display())
