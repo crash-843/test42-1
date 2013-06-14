@@ -5,10 +5,6 @@
 
 {% block title %}42 Coffee Cups Test Assignment{% endblock %}
 
-{% block head_extra %}
-    <link rel="stylesheet" type="text/css" href="{% static "homepage/css/pikaday.css" %}">
-{% endblock head_extra %}
-
 {% block content %}
     <h1>42 Coffee Cups Test Assignment</h1>
     <form id="edit-form" action="{% url 'edit' %}" enctype="multipart/form-data" method="post">
@@ -55,59 +51,5 @@
 {% endblock footer %}
 
 {% block body_extra %}
-    <script src="{% static "homepage/js/lib/jquery-2.0.2.min.js" %}"></script>
-    <script src="{% static "homepage/js/lib/moment.min.js" %}"></script>
-    <script src="{% static "homepage/js/spin.js" %}"></script>
-    <script src="{% static "homepage/js/lib/pikaday.js" %}"></script>
-    <script src="{% static "homepage/js/lib/pikaday.jquery.js" %}"></script>
-    <script src="{% static "homepage/js/lib/jquery.form.min.js" %}"></script>
-    <script>
-        function before(formData, jqForm, options) { 
-            $("#edit-form").spin();
-            $("#edit-form :input").attr("disabled", true);
-            return true; 
-        }
-        function onSuccess(data) {
-            $("#edit-form").spin(false);
-            $("#edit-form :input").attr("disabled", false);
-            $("#photo-preview img").attr("src", data.photo);
-            var $errorlists = $("#edit-form .errorlist");
-            if ($errorlists.length) {
-                $errorlists.remove()
-            }
-        } 
-
-        function error(data) {
-            for(var field in data.responseJSON) {
-                var errors = data.responseJSON[field]
-                if(errors.length) {
-                    var $errorlist = $("#" + field + "_container .errorlist");
-                    if (!$errorlist.length) {
-                        $errorlist = $("<ul>");
-                        $errorlist.addClass("errorlist")
-                        $("#" + field + "_container").prepend($errorlist);
-                    } else {
-                        $errorlist.html("")
-                    }
-                    $.each( errors, function(i, message){
-                      $errorlist.append($("<li>"+message+"</li>"))
-                    });
-                }
-            }
-            $("#edit-form").spin(false);
-            $("#edit-form :input").attr("disabled", false);
-        } 
-    
-        $(function() {
-            $('.date-picker').pikaday({
-                format: 'YYYY-MM-DD'
-            });
-            $('#edit-form').ajaxForm({
-               dataType:  'json',
-               beforeSubmit: before,
-               success: onSuccess,
-               error: error
-            }); 
-        });
-    </script>
+    {{form.media}}
 {% endblock body_extra %}

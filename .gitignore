@@ -8,3 +8,4 @@
 /static/
 /test42/local_settings.py
 supervisord.conf
+*.coffee
