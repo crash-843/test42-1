@@ -3,7 +3,7 @@ from .models import Info, LogEntry, ActionEntry
 
 
 class LogEntryAdmin(admin.ModelAdmin):
-    list_display = ('created', 'method', 'url', 'status')
+    list_display = ('created', 'method', 'url', 'status', 'priortiy')
 
 
 class ActionEntryAdmin(admin.ModelAdmin):

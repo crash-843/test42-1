@@ -10,8 +10,7 @@ def ced_callback(sender, **kwargs):
             post_save: ActionEntry.CREATE if created else ActionEntry.EDIT,
             post_delete: ActionEntry.DELETE
         }.get(signal)
-        ActionEntry.objects.create(model=sender.__name__,
-                                           action=action)
+        ActionEntry.objects.create(model=sender.__name__, action=action)
 
 
 def connect():
