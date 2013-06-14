@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from django.template import Template, Context
 from django.test import TestCase
 from django.test.utils import override_settings
-from ..models import Info, LogEntry
+from ..models import Info, LogEntry, ActionEntry
 
 DATA_DIR = os.path.join(os.path.normpath(os.path.dirname(__file__)), "data/")
 
@@ -28,7 +28,6 @@ class InfoModelTestCase(TestCase):
             contacts="Contacts",
             photo=File(open(os.path.join(DATA_DIR, "Lenna.jpg"), "rb"))
         )
-        self.info.save()
 
     def test_info_model(self):
         self.assertEqual(self.info.first_name, "Bob")
@@ -50,7 +49,6 @@ class LogEntryModelTestCase(TestCase):
             url="/about/",
             status=200
         )
-        self.logentry.save()
 
     def test_logentry_model(self):
         self.assertEqual(self.logentry.method, "GET")
@@ -181,7 +179,6 @@ class TemplateTagsTestCase(TestCase):
             contacts="Contacts",
             photo=File(open(os.path.join(DATA_DIR, "Lenna.jpg"), "rb"))
         )
-        self.info.save()
 
     def test_admin_url(self):
         out = Template(
@@ -215,3 +212,33 @@ class DjangoCommandTestCase(TestCase):
         self.assertEqual(info_line,
                          "error: {0}: {1}".format(Info.__name__,
                                                   Info.objects.count()))
+
+class ActionsTestCase(TestCase):
+    def setUp(self):
+        from ..signalhandlers import connect
+        connect()
+        self.info = Info.objects.create(
+            first_name="Bob",
+            last_name="Jones",
+            birthday="1990-01-01",
+            bio="My biography",
+            email="bob@jones.com",
+            jabber="bob@jabber.org",
+            skype="bobjones",
+            contacts="Contacts",
+            photo=File(open(os.path.join(DATA_DIR, "Lenna.jpg"), "rb"))
+        )
+
+    def test_actions(self):
+        entry0 = ActionEntry.objects.latest()
+        self.assertEqual(entry0.model, Info.__name__)
+        self.assertEqual(entry0.action, ActionEntry.CREATE)
+        self.info.first_name="Constantine"
+        self.info.save()
+        entry1 = ActionEntry.objects.latest()
+        self.assertEqual(entry1.model, Info.__name__)
+        self.assertEqual(entry1.action, ActionEntry.EDIT)
+        self.info.delete()
+        entry2 = ActionEntry.objects.latest()
+        self.assertEqual(entry2.model, Info.__name__)
+        self.assertEqual(entry2.action, ActionEntry.DELETE)
