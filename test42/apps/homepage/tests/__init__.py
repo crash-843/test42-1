@@ -243,3 +243,51 @@ class ActionsTestCase(TestCase):
         entry2 = ActionEntry.objects.latest()
         self.assertEqual(entry2.model, Info.__name__)
         self.assertEqual(entry2.action, ActionEntry.DELETE)
+
+
+class PriortiyTestCase(TestCase):
+    def setUp(self):
+        LogEntry.objects.create(
+            method="GET",
+            url="/about/",
+            status=200
+        )
+        LogEntry.objects.create(
+            method="GET",
+            url="/home/",
+            status=200
+        )
+        LogEntry.objects.create(
+            method="GET",
+            url="/login/",
+            status=200
+        )
+
+    def test_priortiy(self):
+        entries = LogEntry.objects.all()
+        entry0 = entries[0]
+        entry1 = entries[1]
+        entry2 = entries[2]
+        self.assertEqual(entry0.url, "/login/")
+        self.assertEqual(entry0.priortiy, 0)
+        self.assertEqual(entry1.url, "/home/")
+        self.assertEqual(entry1.priortiy, 0)
+        self.assertEqual(entry2.url, "/about/")
+        self.assertEqual(entry2.priortiy, 0)
+        entry0.priortiy = 0
+        entry0.save()
+        entry1.priortiy = 10
+        entry1.save()
+        entry2.priortiy = 20
+        entry2.save()
+        entries
+        entries1 = LogEntry.objects.all()
+        entry10 = entries1[0]
+        entry11 = entries1[1]
+        entry12 = entries1[2]
+        self.assertEqual(entry10.url, "/about/")
+        self.assertEqual(entry10.priortiy, 20)
+        self.assertEqual(entry11.url, "/home/")
+        self.assertEqual(entry11.priortiy, 10)
+        self.assertEqual(entry12.url, "/login/")
+        self.assertEqual(entry12.priortiy, 0)
